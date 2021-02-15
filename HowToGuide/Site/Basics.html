@@ -1,0 +1,26 @@
+<html>
+    <head>
+        <title>How-To Guide</title>
+        <link rel="stylesheet" href="style.css">
+        <meta charset="utf-8"/>
+    </head>
+    <body class="body">
+        <div class="topMenu">            
+            <a class="menuItem" href="Index.html">Home</a>
+            <a class="menuItem" href="Basics.html">Interactor Basics</a>
+            <a class="menuItem" href="Setup.html">Setting Up Interactor</a>
+            <a class="menuItem" href="Customising.html" style="border-right-style: none;">Customising Interactor</a>
+        </div>
+        <div>
+            <h2 class="contentHeading">Interactor implementation</h2>
+            <p class="mainContent">So what does interactor.js actually <i>do?</i> Well, it's documentation says that it "collects usage data and submits it to a user-defined server endpoint on the beforeunload event."<br>
+            What this means is that interactor.js will log a variety of interactions that a user has with your application, as well as metadata sent by the browser.<br>
+            On the beforeunload event, which is called just as the user is closing the webpage, interactor.js will send these logs to a server, which is specified by the developer when implementing interactor.js.<br>
+            <br>
+            Now, that last part, where the data is sent to a server, may seem a bit complicated for some applications - it would often be easier to just save a file containing the logs instead of sending them to a server.<br>
+            However, that would involve modification of the interactor.js script, and is outside the scope of this tutorial. We will be focusing on how to implement interactor into your webpage without any modifications.<br>
+            This means that we will be setting up a webserver, both to host your webpage and the application that will save the log files sent by interactor.js.<br>
+            This may seem complicated or intimidating, but this tutorial aims to present this setup in a simple and easy to understand way, and hopefully you will be able to follow it.</p>
+        </div>
+    </body>
+</html>

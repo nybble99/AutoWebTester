@@ -1,0 +1,87 @@
+<html>
+    <head>
+        <title>How-To Guide</title>
+        <link rel="stylesheet" href="style.css">
+        <meta charset="utf-8"/>
+    </head>
+    <body class="body">
+        <div class="topMenu">            
+            <a class="menuItem" href="Index.html">Home</a>
+            <a class="menuItem" href="Basics.html">Interactor Basics</a>
+            <a class="menuItem" href="Setup.html">Setting Up Interactor</a>
+            <a class="menuItem" href="Customising.html" style="border-right-style: none;">Customising Interactor</a>
+        </div>
+        <div id="mainContent">
+            <!--fix sample download-->
+            <h2 class="contentHeading">Downloading Interactor</h2>
+            <p class="mainContent">The first step to implementing interactor.js is, funnily enough, to download it from <a href="https://github.com/greenstick/interactor">here.</a> The only file we will be using is interactor.min.js, but you may want to download other files in the repository for your own use.
+            You will also want to create a folder to store everything you will need to implement interactor - it is wise to store this in the same place that you have stored your webpage. Place interactor.min.js inside this folder.
+            For this tutorial, we will be using <a href="samplePage.html" download="samplePage.html">this</a> sample webpage - you may want to follow along using this page to make sure interactor is working.</p>
+
+            <h2 class="contentHeading">Setting up a flask server</h2>
+            <p class="mainContent">The next step is to set up a webserver to process the data that interactor will send - in this example we will be using flask, but you are free to use anything else.
+            To install flask, simply launch the command terminal and run this command:
+            <p class="codeSnippet">py -m pip install Flask</p>
+            <p class="mainContent">If you don't have Python and/or pip installed, you can download python <a href="https://www.python.org/downloads/">here</a> and find a tutorial on installing pip <a href="https://pip.pypa.io/en/stable/installing/">here</a>.
+            We will also need to install flask-cors to allow our flask server to properly process the data sent by interactor - flask cors can be installed by launching the command terminal and running this command:</p> 
+            <p class="codeSnippet">py -m pip install Flask flask-cors.</p>
+
+            <h2 class="contentHeading">Creating a script for flask to run</h2>
+            <p class="mainContent">Next we will need to create a python script that flask can run in order to process the data sent by interactor.
+            Create a python file in the same directory as you have saved interactor.min.js - name it however you please, just ensure that it has a .py extension at the end of the filename.
+            Open the file using python IDLE and paste in the following code:</p>
+
+            <p class="codeSnippet">from flask import Flask<br>
+            from flask_cors import CORS<br>
+            from flask import request<br>
+            <br>
+            app = Flask(__name__)<br>
+            CORS(app)<br>
+            <br>
+            @app.route('/postmethod', methods = ['POST'])<br>
+            def receiveData():<br>
+                f = open("path", "a")<br>
+                f.write(str(request.json))<br>
+                f.close()<br>
+                return ""
+            </p>
+
+            <p class="mainContent">Replace the string containing "path" with a path to the file you want to save the logs to - if the file does not exist, it will be created. It is reccomended to use an absolute path here, as a relative path will begin from wherever the flask application is running.</p>
+
+            <h2 class="contentHeading">Running flask</h2>
+            <p class="mainContent">Once you save that file, that is all the setup you need for flask - anytime you want to set the server to receive data, simply run the following 2 commands in the terminal:</p>
+
+            <p class="codeSnippet">
+            set FLASK_APP="path"<br>
+            flask run<br>
+            </p>
+
+            <p class="mainContent">Make sure you change "path" to an absolute path to the python script you just made.</p>
+
+            <h2 class="contentHeading">Testing the sample page</h2>
+            <p class="mainContent">If you are using the sample page shared at the start of this page, try testing it now. Make sure that the flask server is running, and open the sample page. Click around for a bit and then close the webpage.
+            You should see in the terminal that flask has made a log of this - 2 lines should appear with details of the request.
+            If you navigate to the location you specified in the python script, you should see a new file has been created, containing the data that interactor has logged.</p>
+
+            <h2 class="contentHeading">Adding interactor to your own site</h2>
+            <p class="mainContent">If you are not using the sample page, you will need to make some modifications to whatever webpage you are using.
+            Add the following code anywhere inside the &gt;<body> tag of your page:</p>
+    
+            <p class="codeSnippet">
+            &lt;script src=&quot;interactor.min.js&quot; type=&quot;application/javascript&quot;&gt;&lt;/script&gt;<br>
+            &lt;script&gt;<br>
+                var interactions = new Interactor({<br>
+                endpoint                : 'http://127.0.0.1:5000/postmethod',<br>
+                });<br>
+            &lt;/script&gt;<br>
+            </p>
+
+
+            <p class="mainContent">The above code assumes that you are running your flask server on the same server your webpage is stored on - the 127.0.0.1 address (also known as the loopback address) refers to the address of the machine it is used on.
+            If you are using a seperate server for whatever reason, substitute the loopback address for the address of the server you are using (but make sure to keep the rest).</p>
+
+            <p class="mainContent" style="margin-bottom: 200px;">You may test this webpage now if you want - the log data should be sent, processed and saved, but if you look through the file saved by flask, you may notice that any interactions you had with the webpage have not been logged, save for the metadata sent along with the request.
+            This is because nothing within your page has been indicated as having its interactions saved - you can learn more about this in the next page, <a href="Customising.html">Customising Interactor</a>.</p>
+        </div>
+    </body>
+</html>

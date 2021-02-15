@@ -1,0 +1,55 @@
+<html>
+    <head>
+        <title>How-To Guide</title>
+        <link rel="stylesheet" href="style.css">
+        <meta charset="utf-8"/>
+    </head>
+    <body class="body">
+        <div class="topMenu">            
+            <a class="menuItem" href="Index.html">Home</a>
+            <a class="menuItem" href="Basics.html">Interactor Basics</a>
+            <a class="menuItem" href="Setup.html">Setting Up Interactor</a>
+            <a class="menuItem" href="Customising.html" style="border-right-style: none;">Customising Interactor</a>
+        </div>
+        <div>
+            <h2 class="contentHeading">Customising interactor</h2>
+            <p class="mainContent">So now that you have interactor implemented on your site, how do you indicate which elements you want data to be saved about?</p>
+            
+            <h2 class="contentHeading">How to specify which elements to collect data from</h2>
+            <p class="mainContent">Interactor uses the "interaction" class to allow you to specify which elements on your page should have data collected about them.<br>
+            Simply set the class attribute of the element to "interaction", like so:</p>
+            
+            <p class="codeSnippet">&lt;p class=&quot;interaction&gt; </p>
+
+            <p class="mainContent">Any elements of this class will have data collected about them.</p>
+
+            <h2 class="contentHeading">How to specify what interactions should be logged</h2>
+            <p class="mainContent">Interactor uses a script of parameters to allow you to specify which interactions should be logged with your chosen elements.<br>
+            <br>
+            You may remember this script from the setup, where we used it to specify the address of the server the data should be sent to. At the end of the setup, the script looked something like this:</p>
+
+            <p class="codeSnippet">
+                &lt;script&gt;<br>
+                    var interactions = new Interactor({<br>
+                        endpoint                : '127.0.0.1/postmethod'<br>
+                    });<br>
+            &lt;/script&gt;</p>
+
+            <p class="mainContent">By default, interactor tracks the mouseup and touchend events on any elements it is tracking. If you want information on HTML events you can find some <a href="https://www.w3schools.com/tags/ref_eventattributes.asp">here.</a><br>
+            You can add events that you want to be tracked by adding them to the script above in the interactionEvents array.<br>
+            <br>
+            For example, if I wanted to track the mousedown event on my site, I would modify the script like so:</p>
+
+            <p class="codeSnippet">
+                &lt;script&gt;<br>
+                    var interactions = new Interactor({<br>
+                        endpoint                : '127.0.0.1/postmethod',<br>
+                        interactionEvents       : ["mousedown", "mouseup","touchend"]<br>
+                    });<br>
+            &lt;/script&gt;</p>
+
+            <p class="maincontent">Note that I also add the mouseup and touchend events to this array - interactor only tracks these events if no other events are specified, and if any other events <b>are</b> specified, interactor will exlusively track those instead.</p>
+
+        </div>
+    </body>
+</html>
