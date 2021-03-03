@@ -112,6 +112,7 @@ Interactor.prototype = {
                 targetClasses   : e.target.className,
                 content         : e.target.innerText,
                 id              : e.target.id,
+                csspath         : e.csspath,
                 clientPosition  : {
                     x               : e.clientX,
                     y               : e.clientY
