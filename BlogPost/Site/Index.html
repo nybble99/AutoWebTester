@@ -81,7 +81,6 @@
                         point I didn't fully understand it. I assumed the script could easily save a file on the same server the webpage was hosted on, casually
                         overlooking the part of the documentation noting that the logs would be sent to "a user defined server endpoint." Truly Icarian levels of
                         hubris going on here.
-
                         <!-- -basic interactor function
                         -"user defined server endpoint"
                         -basic interactor webpage implementation -->
@@ -97,7 +96,6 @@
                         BLOB and having the user trigger the download manually on the page using a button. What I intended to accomplish with this escapes me.
                         Regardless, this method worked somewhat, giving me a log of the data interactor saves when the user opens the page - various pieces of
                         metadata sent with the request.
-
                         <!-- -local saving misinterp.
                         -server endpoint realisation
                         -output session stringify + beforeunload woes
@@ -128,8 +126,6 @@
                         denying my request to the flask application since it was coming from a different origin. I thought this was strange, considering that
                         both the webpage and the application were both running off of my machine, but I figured out that it was because they were both 
                         using different ports - the flask server was using 5000 and the POST requester site was, naturally, using 80.
-                        
-
                         <!-- -flask setup
                         -flask test script
                         -log and post test shenanigans -->
@@ -141,7 +137,6 @@
                         Flask-cors is an extension for flask which takes care of, you guessed it, Cross Origin Resource Requests. Installation was again simple
                         using PIP, and implementing it within the flask application was as simple as importing the library and calling a method. After fixing a
                         a typo in the flask script, the POST request was finally getting a 200 response - everything was working as intended.
-
                         <!-- -initial cors problem
                         -flask cors finding, setup and script implementation -->
                 <h1 class="contentHeading1">Flask receiver stuff</h1>
@@ -149,7 +144,6 @@
                         After getting the post request working, it was a relatively easy matter to get the interactor log saved to a file. I just imported the request
                         class from flask, which contains all the information sent with the POST request, including the logs themselves. With that, I only needed to open
                         a file stream and write the log to a JSON file.
-
                         <!-- -mods to test script to have it save logs
                         -sample page mod -->
                     </p>
@@ -159,7 +153,6 @@
                         documentation. This was pretty easy to figure out - it was just a matter of calling interactor in the body of the webpage and changing the class of any
                         elements that should be tracked to "interaction". Various input parameters can be specified in a script also placed in the body, but so far I have only
                         needed the default ones.
-
                         <!-- -properly implementing interactor in a page -->
                     </p>
                 <h1 class="contentHeading1">how-to guide</h1>
@@ -168,32 +161,62 @@
                     </p>
                 <h1 class="contentHeading1">interactor log dissection</h1>
                     <p class="contentText">
-                        -useless interactor log members
+                        The next thing I hads to do was to have a look at the json log file from interactor and see if it had all the information needed to replicate any interaction
+                        Most of the information stored wasnt useful to me - platform and language might have their uses for future features, but were out of the scope right now, and
+                        attributes like page, endpoint, interaction.type, interaction.targetClasses, interaction.content, and interaction.screenposition were completely useless here.
+                        The useful attributes within the log were:
+                        <ul>
+                            <li>clientstart - the value of all of the interaction.createdat attributes relative to this are used to time all the interactions.</li>
+                            <li>clientend - the value of this relative to clientstart determines when the test session end.</li>
+                            <li>interaction.event - determines the type of interaction that gets replicated.</li>
+                            <li>interaction.clientposition - used with some events to specify exactly where on the element the event occurs.</li>
+                            <li>interaction.createdat - used with clientstart as described above.</li>
+                            <li>interaction.id (I modified interactor to add this) - specifies which element to interact with.</li>
+                        </ul>
+                        <!-- -useless interactor log members
                         -interactions array
-                        -interactor tweaking for ID
-                    </p>
+                        -interactor tweaking for ID -->
+                    </p> 
                 <h1 class="contentHeading1">pyselenium intro</h1>
                     <p class="contentText">
-                        -pyselenium setup and css path roadbump
+                        The last big part of the project was to parse the logs and replay them using pySelenium, a python package that uses Selenium (a web testing application) to 
+                        automate web testing applications. The installation of pySelenium was relatively easy, using PIP again, but also required adding
+                        a driver for Google Chrome to the Windows System PATH, which was a little difficult. PySelenium was also very easy to start working with, as it only uses a
+                        few commands for most of its functionality. The only problem is that pySelenium uses CSS paths to specify elements rather than IDs, but this is easy to solve,
+                        as the excecute_script() method in pySelenium allows the getElementByID() javascript function to be run instead.
+                        <!-- -pyselenium setup and css path roadbump -->
                     </p>
                 <h1 class="contentHeading1">html events</h1>
                     <p class="contentText">
-                        -sorting events and writing pyselenium equivalents
+                        I now had to get a list of all HTML events and sort through them, noting which ones are indicative of user interaction. Certain HTML events, while useful, are not
+                        triggered by user interaction, such as the canplay or load event. Once I had a list of all the replicable events, I started writing the equivalents of those events 
+                        in pySelenium.
+                        <!-- -sorting events and writing pyselenium equivalents -->
                     </p>
 
             <h2 class="contentHeading2">Planned Work<hr></h2>
                 <h1 class="contentHeading1">Selenium work</h1>
                     <p class="contentText">
-                        -finishing writing equivalents
-                        -parsing interactions from log
-                        -implementing parser/replicator
+                        After all replicable events have been converted to pySelenium events, I intend to write a script that uses the data from the log to replay all of the interactions in
+                        that log. This should be relatively simple, likely just using a switch statement to select the event to be excecuted and the other attributes to specify which elements
+                        to interact with, when to excecute the interaction and when to close the page.
+                        <!-- -parsing interactions from log
+                        -implementing parser/replicator -->
                     </p>
 
                 <h1 class="contentHeading1">User Interface</h1>
                     <p class="contentText">
-                        -cli
-                        -gui
-                        -scheduling
+                        Once the backend of the application is finished, I need to create a user interface before distributing it as a usable application. This can start as a simple command line
+                        interface, but I intend to create a more user-friendly (albeit simple) graphical interface.
+                        <!-- -cli
+                        -gui -->
+                    </p>
+
+            <h2 class="contentHeading2">Potential Improvements<hr></h2>
+                <h1 class="contentHeading1">Scheduling</h1>
+                    <p class="contentText">
+                        A useful feature, which I doubt I will be in the scope of this project, is scheduling logs to be replayed at particular times, or upon certain events occuring (such as an
+                        update to the webpage). This would allow the application to go beyond being just a time saver
                     </p>
         </div>
     </body>
