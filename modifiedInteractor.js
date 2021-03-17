@@ -25,9 +25,6 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
-//--Any comments starting with 2 hypens are my own documentation
-
 var Interactor = function (config) {    
     // Call Initialization on Interactor Call
     this.__init__(config);
@@ -101,11 +98,13 @@ Interactor.prototype = {
 
     // Add Interaction Object Triggered By Events to Records Array
     __addInteraction__: function (e, type) {
-            
+        console.log(e);
+
         var interactor  = this,
 
             // Interaction Object
             interaction     = {
+                something       : e,
                 type            : type,
                 event           : e.type,
                 targetTag       : e.target.nodeName,
@@ -124,6 +123,7 @@ Interactor.prototype = {
                 createdAt       : new Date()
             };
         
+
         // Insert into Records Array
         interactor.records.push(interaction);
 
@@ -133,11 +133,8 @@ Interactor.prototype = {
             interactor.__closeSession__();
             console.log("Session:\n", interactor.session);
         }
-
         
-        return interactor;
-
-        
+        return interactor;      
     },
 
     // Generate Session Object & Assign to Session Property
