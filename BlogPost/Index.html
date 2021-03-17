@@ -5,7 +5,7 @@
         <meta charset="utf-8"/>
     </head>
     <body class="body">
-        <div class="headerBar">Wow this sure is a blog</div>
+        <div class="headerBar">AutoWebTester</div>
         <div class="contentContainer">
             <h2 class="contentHeading2">What is this project?<hr></h2>
             <p class="contentText"><i>
@@ -60,7 +60,7 @@
             </p>
 
             <h2 class="contentHeading2">Current Progress<hr></h2>
-                <h1 class="contentHeading1">initial intro and refreshers</h1>
+                <h1 class="contentHeading1">Introduction</h1>
                     <p class="contentText">
                         The first step I took in beginning this project was to refresh myself on both Python and JavaScript using the
                         courses on <a href="https://www.w3schools.com/">w3schools</a>. I had used both Python and JavaScript before, but
@@ -71,7 +71,7 @@
                             -pyselenium 
                         -->
                     </p>
-                <h1 class="contentHeading1">initial interactor dissection</h1>
+                <h1 class="contentHeading1">First look at Interactor</h1>
                     <p class="contentText">
                         The script linked in the project description, <a href="https://github.com/greenstick/interactor">interactor.js</a> (which I'm going
                         to refer to as interactor to be concise) was the next thing I decided to have a look at. It does what it says on the tin - it collects
@@ -85,7 +85,7 @@
                         -"user defined server endpoint"
                         -basic interactor webpage implementation -->
                     </p>
-                <h1 class="contentHeading1">blob download woes</h1>
+                <h1 class="contentHeading1">Log output attempts</h1>
                     <p class="contentText">
                         Before realising that the data had to be sent to a server, I tried various methods to attempt to get my hands on interactor's logs.
                         After fiddling with the file paths inside interactor to no avail, I tried using console.log(), document.write() and alert(), but, of
@@ -102,7 +102,7 @@
                         -node.js fs attempt
                         -blob download half-success -->
                     </p> 
-                <h1 class="contentHeading1">XAMPP stuff</h1>
+                <h1 class="contentHeading1">XAMPP</h1>
                     <p class="contentText">
                         Eventually, I found out that I would have to set up a local web server to actually make any progress, and decided to use XAMMP, a simple web server
                         application, for this purpose. XAMMP was surprisingly easy to setup - just a matter of choosing a minimal installation and popping a webpage in one of 
@@ -112,7 +112,7 @@
                         -server endpoint webpage mistake
                         -flask bullet-biting -->
                     </p>
-                <h1 class="contentHeading1">Initial Flask stuff</h1>
+                <h1 class="contentHeading1">Flask</h1>
                     <p class="contentText">
                         Flask is a very lightweight web application framework built in Python, and was a great fit for my project.
                         Installation was very simple using PIP, python's package installer. Setting up a basic server was a bit harder,
@@ -130,7 +130,7 @@
                         -flask test script
                         -log and post test shenanigans -->
                     </p>
-                <h1 class="contentHeading1">flask cors stuff</h1>
+                <h1 class="contentHeading1">flask-cors</h1>
                     <p class="contentText">
                         Well, now what? I knew what the problem was but had no way to fix it. I tried messing around with various options in both the webpage
                         and the flask application, but nothing was helping. However, a kind soul in a stackoverflow thread eventually pointed me to flask-cors.
@@ -139,7 +139,7 @@
                         a typo in the flask script, the POST request was finally getting a 200 response - everything was working as intended.
                         <!-- -initial cors problem
                         -flask cors finding, setup and script implementation -->
-                <h1 class="contentHeading1">Flask receiver stuff</h1>
+                <h1 class="contentHeading1">Flask receiver script</h1>
                     <p class="contentText">
                         After getting the post request working, it was a relatively easy matter to get the interactor log saved to a file. I just imported the request
                         class from flask, which contains all the information sent with the POST request, including the logs themselves. With that, I only needed to open
@@ -147,7 +147,7 @@
                         <!-- -mods to test script to have it save logs
                         -sample page mod -->
                     </p>
-                <h1 class="contentHeading1">interactor dissection part 2 electric boogaloo</h1>
+                <h1 class="contentHeading1">Implementing Interactor</h1>
                     <p class="contentText">
                         The next step was to figure how to implement interactor into any webpage - up to this point I had only been using test pages supplied in the interactor 
                         documentation. This was pretty easy to figure out - it was just a matter of calling interactor in the body of the webpage and changing the class of any
@@ -155,17 +155,17 @@
                         needed the default ones.
                         <!-- -properly implementing interactor in a page -->
                     </p>
-                <h1 class="contentHeading1">how-to guide</h1>
+                <h1 class="contentHeading1">How-to Guide</h1>
                     <p class="contentText">
-                        At this point, I produced a how-to guide on my progress up to this point in more detail. That guide can be found <a href="">here</a>.
+                        At this point, I produced a how-to guide on my progress up to this point in more detail. That guide can be found <a href="./HowToGuide/Site/Index.html">here</a>.
                     </p>
-                <h1 class="contentHeading1">interactor log dissection</h1>
+                <h1 class="contentHeading1">Interactor's Logs</h1>
                     <p class="contentText">
                         The next thing I hads to do was to have a look at the json log file from interactor and see if it had all the information needed to replicate any interaction
                         Most of the information stored wasnt useful to me - platform and language might have their uses for future features, but were out of the scope right now, and
                         attributes like page, endpoint, interaction.type, interaction.targetClasses, interaction.content, and interaction.screenposition were completely useless here.
                         The useful attributes within the log were:
-                        <ul>
+                        <ul class="contentText">
                             <li>clientstart - the value of all of the interaction.createdat attributes relative to this are used to time all the interactions.</li>
                             <li>clientend - the value of this relative to clientstart determines when the test session end.</li>
                             <li>interaction.event - determines the type of interaction that gets replicated.</li>
@@ -177,7 +177,7 @@
                         -interactions array
                         -interactor tweaking for ID -->
                     </p> 
-                <h1 class="contentHeading1">pyselenium intro</h1>
+                <h1 class="contentHeading1">pySelenium</h1>
                     <p class="contentText">
                         The last big part of the project was to parse the logs and replay them using pySelenium, a python package that uses Selenium (a web testing application) to 
                         automate web testing applications. The installation of pySelenium was relatively easy, using PIP again, but also required adding
@@ -186,7 +186,7 @@
                         as the excecute_script() method in pySelenium allows the getElementByID() javascript function to be run instead.
                         <!-- -pyselenium setup and css path roadbump -->
                     </p>
-                <h1 class="contentHeading1">html events</h1>
+                <h1 class="contentHeading1">HTML Events</h1>
                     <p class="contentText">
                         I now had to get a list of all HTML events and sort through them, noting which ones are indicative of user interaction. Certain HTML events, while useful, are not
                         triggered by user interaction, such as the canplay or load event. Once I had a list of all the replicable events, I started writing the equivalents of those events 
@@ -195,7 +195,7 @@
                     </p>
 
             <h2 class="contentHeading2">Planned Work<hr></h2>
-                <h1 class="contentHeading1">Selenium work</h1>
+                <h1 class="contentHeading1">Replay Script</h1>
                     <p class="contentText">
                         After all replicable events have been converted to pySelenium events, I intend to write a script that uses the data from the log to replay all of the interactions in
                         that log. This should be relatively simple, likely just using a switch statement to select the event to be excecuted and the other attributes to specify which elements

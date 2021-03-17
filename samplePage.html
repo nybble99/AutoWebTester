@@ -5,10 +5,14 @@
 	</head>
 	<body>
 		<button type="button" onclick="window.alert('hello')" class="interaction" id="dabutton">testButton</button>
+		<br>
+		<label for="textBox">TextTest</label>
+		<input type="text" id="textBox" class="interaction"> 
 		<script src="modifiedInteractor.js" type="application/javascript"></script>
 		<script>
 			var interactions = new Interactor({
 				endpoint                : 'http://127.0.0.1:5000/postmethod',
+				interactionEvents       : ["mousedown","keypress"],
 			});
 		</script>
 	</body>

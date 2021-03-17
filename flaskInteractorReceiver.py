@@ -7,7 +7,7 @@ CORS(app)
 
 @app.route('/postmethod', methods = ['POST'])
 def receiveData():
-    f = open("G:\CSChallengesProject\demofile2.txt", "a")
+    f = open("G:\CSChallengesProject\demofile2.txt", "w")
     f.write(str(request.json))
     f.close()
     return ""
