@@ -102,27 +102,57 @@ Interactor.prototype = {
     // Add Interaction Object Triggered By Events to Records Array
     __addInteraction__: function (e, type) {
             
+        var interactionTemp;
+        switch (e.type) {
+            case 'mousedown':
+                interactionTemp     = {
+                    
+                    type            : type,
+                    event           : e.type,
+                    targetTag       : e.target.nodeName,
+                    targetClasses   : e.target.className,
+                    content         : e.target.innerText,
+                    id              : e.target.id,
+                    clientPosition  : {
+                        x               : e.clientX,
+                        y               : e.clientY
+                    },
+                    screenPosition  : {
+                        x               : e.screenX,
+                        y               : e.screenY
+                    },
+                    createdAt       : new Date(),
+                    something       : e.code
+                };
+                break;
+            case 'keypress':
+                interactionTemp     = {
+                    type            : type,
+                    event           : e.type,
+                    targetTag       : e.target.nodeName,
+                    targetClasses   : e.target.className,
+                    content         : e.target.innerText,
+                    id              : e.target.id,
+                    clientPosition  : {
+                        x               : e.clientX,
+                        y               : e.clientY
+                    },
+                    screenPosition  : {
+                        x               : e.screenX,
+                        y               : e.screenY
+                    },
+                    createdAt       : new Date(),
+                    something       : e.code
+                };
+                break;
+            default:
+                alert("whuh");
+                break;
+        }
         var interactor  = this,
 
             // Interaction Object
-            interaction     = {
-                type            : type,
-                event           : e.type,
-                targetTag       : e.target.nodeName,
-                targetClasses   : e.target.className,
-                content         : e.target.innerText,
-                id              : e.target.id,
-                csspath         : e.csspath,
-                clientPosition  : {
-                    x               : e.clientX,
-                    y               : e.clientY
-                },
-                screenPosition  : {
-                    x               : e.screenX,
-                    y               : e.screenY
-                },
-                createdAt       : new Date()
-            };
+            interaction = interactionTemp;
         
         // Insert into Records Array
         interactor.records.push(interaction);
@@ -148,23 +178,6 @@ Interactor.prototype = {
         interactor.session  = {
             loadTime        : interactor.loadTime,
             unloadTime      : new Date(),
-            language        : window.navigator.language,
-            platform        : window.navigator.platform,
-            port            : window.location.port,
-            clientStart     : {
-                name            : window.navigator.appVersion,
-                innerWidth      : window.innerWidth,
-                innerHeight     : window.innerHeight,
-                outerWidth      : window.outerWidth,
-                outerHeight     : window.outerHeight
-            },
-            page            : {
-                location        : window.location.pathname,
-                href            : window.location.href,
-                origin          : window.location.origin,
-                title           : document.title
-            },
-            endpoint        : interactor.endpoint
         };
 
         return interactor;
