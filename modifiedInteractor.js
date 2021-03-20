@@ -98,7 +98,6 @@ Interactor.prototype = {
 
     // Add Interaction Object Triggered By Events to Records Array
     __addInteraction__: function (e, type) {
-        console.log(e);
 
         var interactor  = this,
 
@@ -133,7 +132,42 @@ Interactor.prototype = {
             interactor.__closeSession__();
             console.log("Session:\n", interactor.session);
         }
+
+        //-----------
+        // chicanery
+        //-----------
         
+        
+        // var replica = new Object();
+        // for(key in e) {
+        //     value = e[key]
+        //     replica[key] = value 
+        //     try{
+        //             replica[key] = e[key];
+        //             console.log(key + " : " + e[key])
+        //     }
+        //     catch(err){alert(err.message)}
+        // }
+
+        // const getCircularReplacer = () => {
+        //     const seen = new WeakSet();
+        //     return (key, value) => {
+        //         if (typeof value === "object" && value !== null) {
+        //         if (seen.has(value)) {
+        //             return;
+        //         }
+        //         seen.add(value);
+        //         }
+        //         return value;
+        //     };
+        // };
+
+        // console.log(e)
+        // console.log(replica)
+        // console.log(JSON.stringify(e))
+        // console.log(JSON.stringify(e, getCircularReplacer()))
+        // console.log(JSON.stringify(replica, getCircularReplacer()))
+
         return interactor;      
     },
 
