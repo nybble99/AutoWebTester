@@ -30,6 +30,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 var Interactor = function (config) {    
     // Call Initialization on Interactor Call
+    //--config is just an object the user passes to the constructor in a script on the webpage - contains all the customisable parts of interactor
     this.__init__(config);
 };
 
@@ -101,58 +102,27 @@ Interactor.prototype = {
 
     // Add Interaction Object Triggered By Events to Records Array
     __addInteraction__: function (e, type) {
-            
-        var interactionTemp;
-        switch (e.type) {
-            case 'mousedown':
-                interactionTemp     = {
-                    
-                    type            : type,
-                    event           : e.type,
-                    targetTag       : e.target.nodeName,
-                    targetClasses   : e.target.className,
-                    content         : e.target.innerText,
-                    id              : e.target.id,
-                    clientPosition  : {
-                        x               : e.clientX,
-                        y               : e.clientY
-                    },
-                    screenPosition  : {
-                        x               : e.screenX,
-                        y               : e.screenY
-                    },
-                    createdAt       : new Date(),
-                    something       : e.code
-                };
+        var interactor = this;
+        var interaction = new Object();//--stores all the info for a particular interaction
+
+        interaction.myEventType = e.type;//--so the replicator knows how to handle the event
+        interaction.target = e.target.id;//--the element the event was triggered on
+        interaction.createdAt = new Date();//--defaults to current time so that timing can be worked out relative to load time
+        switch (e.type) {//--this can be expanded in future to accomodate new events
+            case "keypress":
+                interaction.key = e.key;//--key pressed as a string
+                interaction.shiftkey = e.shiftKey;
+                interaction.altkey = e.altKey;
+                interaction.ctrlkey = e.ctrlKey;
                 break;
-            case 'keypress':
-                interactionTemp     = {
-                    type            : type,
-                    event           : e.type,
-                    targetTag       : e.target.nodeName,
-                    targetClasses   : e.target.className,
-                    content         : e.target.innerText,
-                    id              : e.target.id,
-                    clientPosition  : {
-                        x               : e.clientX,
-                        y               : e.clientY
-                    },
-                    screenPosition  : {
-                        x               : e.screenX,
-                        y               : e.screenY
-                    },
-                    createdAt       : new Date(),
-                    something       : e.code
-                };
+
+            case "mousedown":
+                interaction.buttons = e.buttons;//--sum of numerical values indicating the mouse button pressed
                 break;
+
             default:
-                alert("whuh");
                 break;
         }
-        var interactor  = this,
-
-            // Interaction Object
-            interaction = interactionTemp;
         
         // Insert into Records Array
         interactor.records.push(interaction);
@@ -164,10 +134,7 @@ Interactor.prototype = {
             console.log("Session:\n", interactor.session);
         }
 
-        
         return interactor;
-
-        
     },
 
     // Generate Session Object & Assign to Session Property
@@ -176,8 +143,9 @@ Interactor.prototype = {
 
         // Assign Session Property
         interactor.session  = {
-            loadTime        : interactor.loadTime,
-            unloadTime      : new Date(),
+            loadTime        : interactor.loadTime,//--when the session loads - used relative to interaction times to calculate timings
+            unloadTime      : new Date(),//--determines when the driver closes the webpage
+            href            : window.location.href,//--determines the page to replicate
         };
 
         return interactor;
@@ -191,13 +159,6 @@ Interactor.prototype = {
         // Assign Session Properties
         interactor.session.unloadTime   = new Date();
         interactor.session.interactions = interactor.records;
-        interactor.session.clientEnd    = {
-            name            : window.navigator.appVersion,
-            innerWidth      : window.innerWidth,
-            innerHeight     : window.innerHeight,
-            outerWidth      : window.outerWidth,
-            outerHeight     : window.outerHeight
-        };
 
         return interactor;
     },
@@ -213,9 +174,9 @@ Interactor.prototype = {
         interactor.__closeSession__();
 
         // Post Session Data Serialized as JSON
-        xhr.open('POST', interactor.endpoint, interactor.async);
-        xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
-        xhr.send(JSON.stringify(interactor.session));
+        xhr.open('POST', interactor.endpoint, interactor.async);//--opens a POST request to the receiver server (specified by the user but usually just a loopback)
+        xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');//--sets headings to make receiving data easier
+        xhr.send(JSON.stringify(interactor.session));//--sends a json of all the data interactor is currently holding
 
         return interactor;
     }

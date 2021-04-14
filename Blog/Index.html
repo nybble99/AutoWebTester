@@ -9,16 +9,16 @@
         <div class="contentContainer">
             <h2 class="contentHeading2">What is this project?<hr></h2>
             <p class="contentText"><i>
-                    "Testing is a crucial part of web app development and can take around (and sometimes over) 30% of developer time. Modern commercial web applications often 
-                    include logging to track user behaviour on a web site to better optimise web application development. By adapting these logs so that they can be ‘replayed’ 
-                    automated tests can be created by manually testing a web application once and then using the logs to automatically verify the test each time 
-                    (after some minor modification to check that some output states are correct) 
-                    <br> 
-                    The purpose of this project is to adapt a minimal user logging system such as 
-                    <a href = "https://github.com/greenstick/interactor">https://github.com/greenstick/interactor</a> (Links to an external site.)) 
-                    to create selenium scripts that can repeat the web operations that the user performed so that end to end tests of web applications can be trivially 
-                    created just by manually using the site. The system can assume that controls on web pages have unique ids (so that minor changes to web pages don’t break 
-                    the selenium scripts)." 
+                "Testing is a crucial part of web app development and can take around (and sometimes over) 30% of developer time. Modern commercial web applications often 
+                include logging to track user behaviour on a web site to better optimise web application development. By adapting these logs so that they can be ‘replayed’ 
+                automated tests can be created by manually testing a web application once and then using the logs to automatically verify the test each time 
+                (after some minor modification to check that some output states are correct) 
+                <br> 
+                The purpose of this project is to adapt a minimal user logging system such as 
+                <a href = "https://github.com/greenstick/interactor">https://github.com/greenstick/interactor</a> (Links to an external site.)) 
+                to create selenium scripts that can repeat the web operations that the user performed so that end to end tests of web applications can be trivially 
+                created just by manually using the site. The system can assume that controls on web pages have unique ids (so that minor changes to web pages don’t break 
+                the selenium scripts)." 
             </i></p>
             <p class="contentText">
                 Above is the description I was given for my first year Computer Science Challenges project.
@@ -193,26 +193,55 @@
                         in pySelenium.
                         <!-- -sorting events and writing pyselenium equivalents -->
                     </p>
-
-            <h2 class="contentHeading2">Planned Work<hr></h2>
-                <h1 class="contentHeading1">Replay Script</h1>
+                <h1 class="contentHeading1">Parser Script</h1>
                     <p class="contentText">
-                        After all replicable events have been converted to pySelenium events, I intend to write a script that uses the data from the log to replay all of the interactions in
-                        that log. This should be relatively simple, likely just using a switch statement to select the event to be excecuted and the other attributes to specify which elements
-                        to interact with, when to excecute the interaction and when to close the page.
+                        My initial judgement of how simple the parser script would be to write was a bit off. After getting started with it, I figured that there were 3 ways I could write it:
+                        <ol class="contentText">
+                            <li>
+                                <h1 class="contentSubHeading">PySelenium Event Replication</h1>
+                                <p class="contentText">
+                                    This method involves modifying interactor to save different properties of an event depending on what type the event object resolves to at runtime, and then
+                                    replicating that event as closely as possible using pySelenium's (somewhat limited) set of test steps. This is the most straightforward method, but not the 
+                                    best, design-wise. I went into the project assuming this was the only method, but turns out theres a lot of user-triggered events in HTML that aren't just
+                                    clicks and types. A lot of them <i>can</i> be replicated using pySelenium (e.g. a double click event can be replicated with 2 single clicks in quick succession),
+                                    but many can't (e.g. pySelenium has no way to trigger a print event or a cut event), and, even so, it is not a particularly sustainable method - any events that
+                                    need tracked must be added manually.
+                                </p>
+                            </li>
+                            <li>
+                                <h1 class="contentSubHeading">Javascript Event Replication</h1>
+                                <p class="contentText">
+                                    This method only uses pySelenium for navigating to the webpage and running javascript code, using javascript to replicate events. I'd thought of this as unnecessarily
+                                    complex before - why use javascript to click or type when pySelenium does the same thing more easily. However, I came across something that changed my mind - the dispatchEvent()
+                                    method. This method is common to all elements in HTML, and, when given an event object as parameter, excecutes that event on the element calling it. If I could modify
+                                    interactor to log a copy of the event <i>object</i>, rather than just its properties, I could feed that object to dispatchEvent() as a parameter without having to write
+                                    unique code for each method. This would allow any and all events to be replicated exactly as they were initially excecuted, providing a much better solution, design-wise.
+                                </p>
+                            </li>
+                            <li>
+                                <h1 class="contentSubHeading">"Hybrid" Event Replication</h1>
+                                <p class="contentText">
+                                    (Add if using)
+                                </p>
+                            </li>
+                        </ol>
                         <!-- -parsing interactions from log
                         -implementing parser/replicator -->
                     </p>
-
                 <h1 class="contentHeading1">User Interface</h1>
                     <p class="contentText">
-                        Once the backend of the application is finished, I need to create a user interface before distributing it as a usable application. This can start as a simple command line
-                        interface, but I intend to create a more user-friendly (albeit simple) graphical interface.
-                        <!-- -cli
-                        -gui -->
+                        Currently, the application uses a pretty bare-bones Command Line Interface - the user selects a folder containing log files and can then select any log in that file to replay.
                     </p>
 
+            <h2 class="contentHeading2">Planned Work<hr></h2>
+
             <h2 class="contentHeading2">Potential Improvements<hr></h2>
+            
+                <h1 class="contentHeading1">Improved User Interface and Installer</h1>
+                    <p class="contentText">
+                        This project would benefit greatly from a graphical user interface (even a simple one), and would especially benefit from an installer, which automatically sets up a flask server
+                        to receive logs and potentially modifies any specified webpages to include interactor in their code.
+                    </p>
                 <h1 class="contentHeading1">Scheduling</h1>
                     <p class="contentText">
                         A useful feature, which I doubt I will be in the scope of this project, is scheduling logs to be replayed at particular times, or upon certain events occuring (such as an
@@ -221,3 +250,12 @@
         </div>
     </body>
 </html>
+<!-- current work: 
+        parser woes:
+            Explanation of both methods
+            Ad lib to slot chosen method into
+        CLI
+     future work:
+        GUI
+        Deep copy and replication
+     -->
