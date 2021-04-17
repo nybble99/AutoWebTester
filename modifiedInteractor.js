@@ -25,7 +25,6 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 //--Any comments starting with 2 hypens are my own documentation
 
 var Interactor = function (config) {    
@@ -35,7 +34,6 @@ var Interactor = function (config) {
 };
 
 Interactor.prototype = {
-
     // Initialization
     __init__: function (config) {
 
@@ -64,8 +62,7 @@ Interactor.prototype = {
     },
 
     // Create Events to Track
-    __bindEvents__: function () {
-        
+    __bindEvents__: function () {    
         var interactor  = this;
 
         // Set Interaction Capture
@@ -153,7 +150,6 @@ Interactor.prototype = {
 
     // Insert End of Session Values into Session Property
     __closeSession__: function () {
-
         var interactor = this;
 
         // Assign Session Properties
