@@ -33,53 +33,52 @@ f.close()
 requotedString = unparsedString.replace("'", "\"") 
 jsonString = requotedString.replace("False", "\"False\"")
 
-try:
-    log = json.loads(jsonString) #converts the json string into a dictionary
-    href = log["href"] #log source page
-    currentTime = convertLogtimeToDatetime(log["loadTime"]) #used in the main loop for timing - starts at session load
+#try:
+log = json.loads(jsonString) #converts the json string into a dictionary
+href = log["href"] #log source page
+currentTime = convertLogtimeToDatetime(log["loadTime"]) #used in the main loop for timing - starts at session load
 
-    #gets rid of default logging and allows me to do my own
-    driverOptions = webdriver.ChromeOptions()
-    driverOptions.add_experimental_option("excludeSwitches", ['enable-logging']) 
+#gets rid of default logging and allows me to do my own
+driverOptions = webdriver.ChromeOptions()
+driverOptions.add_experimental_option("excludeSwitches", ['enable-logging']) 
 
-    driver = webdriver.Chrome(options=driverOptions) #initialising webdriver with above options
-    driver.get(href) #loads the page
+driver = webdriver.Chrome(options=driverOptions) #initialising webdriver with above options
+driver.get(href) #loads the page
 
-    driver.implicitly_wait(5000) #to give the page time to load itself up
+driver.implicitly_wait(5000) #to give the page time to load itself up
 
-    #loops through all logged interactions
-    for x in range(len(log["interactions"])):
-        currentInteraction = log["interactions"][x]
-        eventType = currentInteraction["myEventType"]
-        targetID = currentInteraction["target"] #id of target element
-        createdAt = convertLogtimeToDatetime(currentInteraction["createdAt"])
-        elem = driver.find_element_by_id(targetID)
+#loops through all logged interactions
+for x in range(len(log["interactions"])):
+    currentInteraction = log["interactions"][x]
+    eventType = currentInteraction["myEventType"]
+    targetID = currentInteraction["target"] #id of target element
+    createdAt = convertLogtimeToDatetime(currentInteraction["createdAt"])
+    elem = driver.find_element_by_id(targetID)
 
-        nextDelay = (createdAt-currentTime).total_seconds() #seconds between this events creation and the last events creation (or the session load if its the first)
-        currentTime = createdAt
+    #seconds between this events creation and the last events creation (or the session load if its the first)
+    nextDelay = (createdAt-currentTime).total_seconds() 
+    currentTime = createdAt
 
-        time.sleep(nextDelay)
+    time.sleep(nextDelay)
 
-        if eventType == "keypress": 
-            key = currentInteraction["key"]
+    if eventType == "keypress": 
+        key = currentInteraction["key"]
 
-            if key == "Enter": #since this will just type "Enter" and not the enter key
-                key = Keys.RETURN
+        if key == "Enter": #since this will just type "Enter" and not the enter key
+            key = Keys.RETURN
 
-            elem.send_keys(key)
-        if eventType == "mousedown":
-            elem.click()
+        elem.send_keys(key)
+    if eventType == "mousedown":
+        elem.click()
 
-        # try:
-        #     alertObj = driver.switch_to_alert()
-        #     alertObj.accept()
-        # except selenium.common.exceptions.NoAlertPresentException:
-        #     print("No alert")
+#sleeps the remaining time until the session unload time
+time.sleep((convertLogtimeToDatetime(log["unloadTime"]) - createdAt).total_seconds())
+driver.close()
+print("Log replayed successfully")
+#except: #should add more errors to customise error message
+    #print("Error replicating log") 
 
-    time.sleep((convertLogtimeToDatetime(log["unloadTime"]) - createdAt).total_seconds())#sleeps the remaining time until 
-    driver.close()
-except: #should add more errors to customise error message
-    print("Error replicating log") 
+input()
     
     
 

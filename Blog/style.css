@@ -24,6 +24,13 @@
     margin-right: inherit;
 }
 
+.contentCaption {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 14px;
+    margin-left: inherit;
+    margin-right: inherit;
+}
+
 .contentHeading2  {
     font-family: Arial, Helvetica, sans-serif;
     margin-left: inherit;

@@ -21,10 +21,7 @@
                 the selenium scripts)." 
             </i></p>
             <p class="contentText">
-                Above is the description I was given for my first year Computer Science Challenges project.
-            </p>
-            <p class="contentText">
-                The intent of this project is to create an application that, when implemented on a webserver, can record the interactions a user has with a webpage, 
+                Above is the brief I was given for this project, the intent of which is to create an application that, when implemented on a webserver, can record the interactions a user has with a webpage, 
                 store those interactions as log files, and then "replay" the interactions in those files as closely as possible, either when manually triggered or as part of 
                 scheduled testing.
             </p>
@@ -76,9 +73,6 @@
                         This script was a very important part of development, and I ended up using a modified version of it in the final project, but at this
                         point I didn't fully understand it. I assumed the script could easily save a file on the same server the webpage was hosted on, casually
                         overlooking the part of the documentation noting that the logs would be sent to "a user defined server endpoint."
-                        <!-- -basic interactor function
-                        -"user defined server endpoint"
-                        -basic interactor webpage implementation -->
                     </p>
                 <h1 class="contentHeading1">Log output attempts</h1>
                     <p class="contentText">
@@ -129,6 +123,8 @@
                         class from flask, which contains all the information sent with the POST request, including the logs themselves. With that, I only needed to open
                         a file stream and write the log to a JSON file.
                     </p>
+                    <img src="receiver.png" class="contentText">
+                    <p class="contentCaption">The final version of the receiver script</p>
                 <h1 class="contentHeading1">Implementing Interactor</h1>
                     <p class="contentText">
                         The next step was to figure how to implement interactor into any webpage - up to this point I had only been using test pages supplied in the interactor 
@@ -136,6 +132,8 @@
                         changing the class of any elements that should be tracked to "interaction". Various input parameters can be specified in the constructor,  but so far I have 
                         only needed the default ones.
                     </p>
+                    <img src="interactorImplementation.png" class="contentText">
+                    <p class="contentCaption">A simple implementation of interactor on a webpage</p> 
                 <h1 class="contentHeading1">How-to Guide</h1>
                     <p class="contentText">
                         At this point, I produced a how-to guide on my progress up to this point in more detail. That guide can be found <a href="./HowToGuide/Site/Index.html">here</a>.
@@ -153,6 +151,9 @@
                             <li>interaction.createdat - used with clientstart as described above.</li>
                             <li>interaction.id (I modified interactor to add this) - specifies which element to interact with.</li>
                         </ul>
+                        <p class="contentText">After sorting these, I modified interactor to not save any properties I didn't need.</p>
+                        <img src="sampleLog.png" class="contentText">
+                        <p class="contentCaption">A basic interactor log</p>
                     </p> 
                 <h1 class="contentHeading1">Python Selenium</h1>
                     <p class="contentText">
@@ -198,15 +199,15 @@
                             I decided that I would start trying to make a script using the second method.
                         </p> 
                     </p>
-                <h1 class="contentHeading1">JavaScript Replicator/h1>
+                <h1 class="contentHeading1">JavaScript Replicator</h1>
                     <p class="contentText">
                         At first, this method seemed rather easy, and I was able to get dispatchEvent() working easily on a test page. However, I ran into a big hurdle pretty early in, whenever I tried to copy
-                        the event object into the log object - it didn't work, at all. The log object is prepared for sending using JSON.stringify to convert it to JSON. From what I found out, I think that the 
-                        object was overwriting the toJSON property to just return a single property rather than the whole object. I managed to get my own stringify function working, but it only produced a shallow
-                        copy - not serialising nested objects. I modified it to do that as well, but, since the Event object is chock full of circular references, that didn't work either. At that point, with no way
+                        the event object into the log object - it didn't work, at all. The log object is prepared for sending using JSON.stringify() to convert it to JSON. From what I found out, I think that the 
+                        object was overwriting the toJSON() property to just return a single property rather than the whole object. I managed to get my own stringify function working, but it only produced a shallow
+                        copy - not serialising nested objects. I modified it to make a deep copy instead, but, since the Event object is chock full of circular references, that didn't work either. At that point, with no way
                         I could find to get this working, I came up with a new method, a combination of the 2 previous ones.
                     </p>
-                <h1 class="contentSubHeading">"Hybrid" Event Replicator</h1>
+                <h1 class="contentHeading1">"Hybrid" Event Replicator</h1>
                     <p class="contentText">
                         This method uses dispatchEvent() to replicate events like the Javascript method, but, instead of passing it the event object directly, interactor is modified to save the barebones information
                         required to build a new event object of that same type and pass that to dispatchEvent() instead. This is similar to the purely Python Selenium method, but requires a lot less work for each new 
@@ -215,7 +216,7 @@
                         was hard enough, and required a lot of fiddling to work at all. Then, when it <i>did</i> work, dispatchEvent() stopped showing any updates it had made to the page - text typed by dispatchEvent(),
                         clearly visible in the dev console, and even being logged by interactor, didn't show up on the page at all.
                     </p>
-                <h1 class="contentSubHeading">Back to Python Selenium</h1>
+                <h1 class="contentHeading1">Back to Python Selenium</h1>
                     <p class="contentText">
                         After finishing up other work and coming back to this issue, I decided to cut my losses and get a working application with Python Selenium instead, using the first method mentioned for the
                         replicator script. After the last 2 attempts, it was nice to get something working as it should - the replicator script for Python Selenium works well, and, for the parser, Python has a 
@@ -226,11 +227,15 @@
                     <p class="contentText">
                         Currently, the application uses a pretty bare-bones Command Line Interface - the user selects a folder containing log files and can then select any log in that file to replay. 
                     </p>
+                    <img src="cli.png" class="contentText">
+                    <p class="contentCaption">The current user interface</p>
                 <h1 class="contentHeading1">Timing</h1>
                     <p class="contentText">
                         After getting the basic events (mousedown, keypress) working, I moved onto the timing system, using the loadtime of the sesssion and the time of each interaction relative to that to
-                        decide the time each event should be excecuted.
+                        decide the time each event should be excecuted. 
                     </p>
+                    <img src="replicator.png" class="contentText" width=80%>
+                    <p class="contentCaption">The main section of the replicator script</p>
             <h2 class="contentHeading2">Potential Improvements<hr></h2>
                 <h1 class="contentHeading1">More Events</h1>
                     <p class="contentText">
@@ -250,12 +255,3 @@
         </div>
     </body>
 </html>
-<!-- current work: 
-        parser woes:
-            Explanation of both methods
-            Ad lib to slot chosen method into
-        CLI
-     future work:
-        GUI
-        Deep copy and replication
-     -->
