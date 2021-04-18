@@ -22,7 +22,7 @@ while(valid == False):
     else:
         print("Enter a valid path")
 
-#sampleLogPath = "G:\\CSChallengesProject\\repo\\AutoWebTester\\latestLog.json" #for testing
+#sampleLogPath = "G:\\CSChallengesProject\\repo\\AutoWebTester\\logs\\testLog.json" #for testing
 
 #loads the json log file into a string
 f = open(sampleLogPath, "r")

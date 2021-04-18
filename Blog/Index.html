@@ -121,7 +121,7 @@
                     <p class="contentText">
                         After getting the post request working, it was a relatively easy matter to get the interactor log saved to a file. I just imported the request
                         class from flask, which contains all the information sent with the POST request, including the logs themselves. With that, I only needed to open
-                        a file stream and write the log to a JSON file.
+                        a file stream and write the log to a JSON file, using the current datetime as the filename.
                     </p>
                     <img src="receiver.png" class="contentText">
                     <p class="contentCaption">The final version of the receiver script</p>

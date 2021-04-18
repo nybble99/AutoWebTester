@@ -2,3 +2,4 @@ __pycache__/
 events.txt
 Notes.txt
 latestLog.json
+logs/

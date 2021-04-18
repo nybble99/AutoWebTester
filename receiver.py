@@ -1,13 +1,17 @@
 from flask import Flask
 from flask_cors import CORS
 from flask import request
+import datetime
 
 app = Flask(__name__)
 CORS(app)
 
 @app.route('/logPost', methods = ['POST'])
 def receiveData():
-    f = open("G:\\CSChallengesProject\\repo\\AutoWebTester\\latestLog.json", "w")
+    filename = str(datetime.datetime.now()).replace(' ', '_')
+    filename = filename.replace(':','-')
+    filePath = "G:\\CSChallengesProject\\repo\\AutoWebTester\\logs\\" + filename + ".json"
+    f = open(filePath, "w+")
     f.write(str(request.json))
     f.close()
     return ""
