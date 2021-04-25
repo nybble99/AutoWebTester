@@ -1,4 +1,4 @@
-(This has been posted on r/python at this link:)
+(This has been posted on r/python at this link:https://www.reddit.com/r/Python/comments/myijdi/i_made_an_application_that_stores_logs_of_user/)
 I have chosen r/python as the main bulk of original content in this project
 was written in python, and as it seems to be more friendly towards amateur
 projects than other applicable subreddits.
