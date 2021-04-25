@@ -10,7 +10,7 @@ CORS(app)
 def receiveData():
     filename = str(datetime.datetime.now()).replace(' ', '_')
     filename = filename.replace(':','-')
-    filePath = "G:\\CSChallengesProject\\repo\\AutoWebTester\\logs\\" + filename + ".json"
+    filePath = "#path#\\" + filename + ".json"
     f = open(filePath, "w+")
     f.write(str(request.json))
     f.close()

@@ -1,0 +1,99 @@
+<html>
+    <head>
+        <title>Blog Post</title>
+        <link rel="stylesheet" href="style.css">
+        <meta charset="utf-8"/>
+    </head>
+    <body class="body">
+        <div class="headerBar">AutoWebTester Startup Guide</div>
+        <div class="contentContainer">
+            <h2 class="contentHeading2">Python and library installation<hr></h2>
+            <p class="contentText">
+                If you don't have python, pip, flask, flask-cors and python selenium installed, follow the instructions below to do so.
+                <br>
+                <br>
+                You can download python from <a href="https://www.python.org/downloads/">here</a> and follow the instructions there to install python.
+                <br>
+                <br>
+                You can check if you already have pip installed by running the following command:<br>
+                    <p class="codeSnippet">py -m pip --version</p><br>
+            </p>
+            <p class="contentText"> 
+                If you don't, <a href="https://pip.pypa.io/en/stable/installing/">this</a> page provides instructions on how to install pip.
+                <br>
+                <br>
+                Flask, flask-cors and selenium can be installed with pip using the commands:<br>
+                    py -m pip install Flask<br>
+                    py -m pip install flask-cors<br>
+                    py -m pip install selenium<br>
+                <br>
+            </p>
+            <h2 class="contentHeading2">Chromedriver<hr></h2>
+            <p class="contentText">
+                Chromedriver can be downloaded fom <a href="https://sites.google.com/a/chromium.org/chromedriver/downloads"> here</a> - make sure to 
+                download the correct version corresponding to the version of chrome you want to test on.<br>
+                <br>
+                Once chromedriver is downloaded, open the environment variables screen. This can be found by searching "environment variables" in the searchbar as shown.<br>
+                <br>
+                <img src="env.png" width="80%"><br>
+            </p>
+            <p class="contentText">
+                Click on the box labelled "environment variables" and a screen similar to this one should open.<br>
+                <br>
+                <img src="env2.png" width="80%">
+                <br>
+                <br>
+                Click on "new" and then "browse directory".<br>
+                Navigate to the folder containing chromedriver and click OK.<br>
+                <br>
+            </p>
+            <h2 class="contentHeading2">modifiedInteractor.js<hr></h2>
+            <p class="contentText">
+                In the webpage you want to log:<br>
+                    <ul class="contentText">
+                        <li>Copy modifiedInteractor.js into the same directory as the webpage.</li><br>
+                        <li>Add the following 2 scripts into the webpage, replacing #events# with a list of comma seperated strings containing the name(s) of the event(s) you want tracked.<br>
+                            <p class="codeSnippet">
+                            &lt;script src=&quot;interactor.min.js&quot; type=&quot;application/javascript&quot;&gt;&lt;/script&gt;<br>
+                            &lt;script&gt;<br>
+                                var interactions = new Interactor({<br>
+                                endpoint                : 'http://127.0.0.1:5000/postmethod',<br>
+                                interactionEvents       : [#events#]
+                                });<br>
+                            &lt;/script&gt;<br>
+                            </p>
+                        </li><br>
+                        <li>Set the class of any elements you want to track as "interaction".</li><br>
+                    </ul>
+            </p>  
+            <h2 class="contentHeading2">Receiver.py<hr></h2>
+            <p class="contentText">
+                In receiver.py, replace #path# with an existing filepath that you want log files to be stored in (use double backslashes in paths).<br>
+                <br>
+                Once you are ready to receive logs from a webpage, run the following commands, replacing #path# with the current filepath of receiver.py (single backslashes, no quotation marks).<br>
+                <p class="codeSnippet">
+                    set FLASK_APP=#path#<br>
+                    flask run
+                </p>
+            </p>
+            <p class="contentText">
+                You will now receive a log of any user interactions with the host webpage, for each session. These logs can then be replayed by running replicator.py
+                and entering the path of the log file.
+            </p>
+        </div>
+    </body>
+</html>
+
+<!-- 
+    install python
+    install pip
+    install flask
+    install flask-cors
+    install selenium
+    download chromedriver
+    add chromedriver to path
+    modify webpage to enable interactor
+    change receiver path
+    set flask app
+    run flask
+ -->

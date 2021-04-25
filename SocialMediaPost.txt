@@ -1,0 +1,14 @@
+(This has been posted on r/python at this link:)
+I have chosen r/python as the main bulk of original content in this project
+was written in python, and as it seems to be more friendly towards amateur
+projects than other applicable subreddits.
+Note: it seems to be convention on this subreddit for users posting their own
+work to begin with "I made a" followed by a brief description - I will be following
+this format, except that I will also be using a slightly more detailed text description that
+I will post in the comments.
+
+Title: I made an application that stores logs of user interaction and replays them using Selenium
+Image: A screenshot of a section of the replicator.py script, found in this folder
+Description: This project uses a modified version of this (https://github.com/greenstick/interactor)
+script to send session log objects to a python script which saves them as a json log file. A seperate
+python script can then replay those logs using python selenium.
